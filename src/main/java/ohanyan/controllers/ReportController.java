@@ -19,7 +19,7 @@ import java.util.Calendar;
 
 @RequiredArgsConstructor
 @Component
-@FxmlView("resourceReport.fxml")
+@FxmlView("report.fxml")
 public class ReportController {
 
     @FXML

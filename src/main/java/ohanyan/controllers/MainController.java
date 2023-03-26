@@ -220,6 +220,9 @@ public class MainController {
             case "uploadCsv":
                 setUploadCsvStage();
                 break;
+            case "report":
+                setReportStage();
+                break;
         }
     }
 
@@ -233,6 +236,10 @@ public class MainController {
 
     private void setUploadCsvStage() {
         fxWeaver.loadController(UploadCsvController.class).show("Загрузить CSV файл");
+    }
+
+    private void setReportStage() {
+        fxWeaver.loadController(ReportController.class).show("Отчёт");
     }
 
     public void actionButtonPressed(ActionEvent actionEvent) {

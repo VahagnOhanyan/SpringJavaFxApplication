@@ -1,9 +1,6 @@
 package ohanyan.controllers;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -21,29 +18,23 @@ import ohanyan.repo.CsvRepository;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
-import java.io.IOException;
-import java.sql.SQLException;
 import java.util.List;
 
 @RequiredArgsConstructor
 @Component
-@FxmlView("importOneCReport.fxml")
+@FxmlView("uploadCsv.fxml")
 public class UploadCsvController {
 
+    private final DBconnection dBconnection;
+
     private final CsvImportedRepository csvImportedRepository;
-    private final CsvRepository csvRepository;
+    File csvFile = null;
+    private Stage stage;
     @FXML
     public Label alreadyImported;
     @FXML
-    public Label noReportImported;
-
-    @FXML
     public Button uploadCsv;
-    private final DBconnection dBconnection;
 
-    File csvFile = null;
-
-    private Stage stage;
     @FXML
     public AnchorPane anchorPane;
 
@@ -64,7 +55,6 @@ public class UploadCsvController {
     }
 
     public void browse() {
-
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Open Resource File");
         csvFile = fileChooser.showOpenDialog(new Stage());
