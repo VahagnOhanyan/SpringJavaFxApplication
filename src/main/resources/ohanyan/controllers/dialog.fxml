@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane fx:id="root" prefHeight="239.0" prefWidth="381.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ohanyan.controllers.DialogController">
+     <Button fx:id="confirm" layoutX="42.0" layoutY="197.0" mnemonicParsing="false" onAction="#actionButtonPressed" prefHeight="31.0" prefWidth="131.0" text="Подтвердить" />
+     <Button fx:id="cancel" layoutX="207.0" layoutY="197.0" mnemonicParsing="false" onAction="#actionButtonPressed" prefHeight="31.0" prefWidth="131.0" text="Отменить" />
+</AnchorPane>

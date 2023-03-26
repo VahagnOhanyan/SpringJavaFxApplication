@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane fx:id="accessControlPane" prefHeight="350" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ohanyan.controllers.AccessController">
+    <children>
+        <Group>
+            <ComboBox fx:id="roleBox" layoutX="11.0" layoutY="11.0" promptText="Выберите роль" />
+            <Accordion layoutY="45.0" prefHeight="250" prefWidth="900">
+                <panes>
+                    <TitledPane fx:id="refLabel" collapsible="true" expanded="false" prefWidth="900" text="Справочники" textFill="BLACK" visible="true">
+                        <TableView fx:id="referencesAccessView" prefWidth="900" visible="true" />
+                    </TitledPane>
+                    <TitledPane fx:id="managementLabel" collapsible="true" expanded="false" prefWidth="900" text="Менеджмент" textFill="BLACK" visible="true">
+                        <TableView fx:id="managementAccessView" prefWidth="900" visible="true" />
+                    </TitledPane>
+                    <TitledPane fx:id="taskLabel" collapsible="true" expanded="false" prefWidth="900" text="Задачи" textFill="BLACK" visible="true">
+                        <TableView fx:id="tasksAccessView" prefWidth="900" visible="true" />
+                    </TitledPane>
+                    <TitledPane fx:id="timeSheetLabel" collapsible="true" expanded="false" prefWidth="900" text="Табель" textFill="BLACK" visible="true">
+                        <TableView fx:id="timeSheetAccessView" prefWidth="900" visible="true" />
+                    </TitledPane>
+                    <TitledPane fx:id="reportLabel" collapsible="true" expanded="false" prefWidth="900" text="Отчёты" textFill="BLACK" visible="true">
+                        <TableView fx:id="reportsAccessView" prefWidth="900" visible="true" />
+                    </TitledPane>
+                </panes>
+            </Accordion>
+        </Group>
+        <Button fx:id="apply" layoutX="755.0" layoutY="306.0" mnemonicParsing="false" onAction="#actionButtonPressed" prefHeight="31.0" prefWidth="131.0" text="Применить" visible="true" />
+        <Button fx:id="close" layoutX="618.0" layoutY="306.0" mnemonicParsing="false" onAction="#actionButtonPressed" prefHeight="31.0" prefWidth="131.0" text="Закрыть" visible="true" />
+        <Button fx:id="cancel" layoutX="481.0" layoutY="306.0" mnemonicParsing="false" onAction="#actionButtonPressed" prefHeight="31.0" prefWidth="131.0" text="Отменить" visible="true" />
+        <Button fx:id="reset" layoutX="14.0" layoutY="306.0" mnemonicParsing="false" onAction="#actionButtonPressed" prefHeight="31.0" prefWidth="131.0" text="Сброс" visible="true" />
+
+    </children>
+</AnchorPane>

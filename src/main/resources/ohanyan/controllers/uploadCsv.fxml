@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane fx:id="anchorPane" prefHeight="205.0" prefWidth="296.0" xmlns="http://javafx.com/javafx/11.0.2"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="ohanyan.controllers.UploadCsvController">
+    <Button fx:id="browse" layoutX="84.0" layoutY="50.0" mnemonicParsing="false" onAction="#browse" prefHeight="26.0"
+            prefWidth="127.0" text="Открыть"/>
+    <Button fx:id="uploadCsv" disable="true" layoutX="84.0" layoutY="95.0" mnemonicParsing="false" onAction="#uploadCsv"
+            prefHeight="26.0" prefWidth="127.0"
+            text="Импорт CSV"/>
+    <Label fx:id="alreadyImported" layoutX="14.0" layoutY="14.0" text="Отчёт за данный период уже загружен"
+           visible="false"/>
+    <Label fx:id="noReportImported" layoutX="77.0" layoutY="170.0" text="Нет загруженных отчётов" visible="false"/>
+</AnchorPane>
