@@ -1,15 +1,21 @@
 package ohanyan.repo;
 
 
-import ohanyan.domain.security.PrivilegeEntity;
+import ohanyan.domain.UserEntity;
 import ohanyan.domain.UserInfoEntity;
 import ohanyan.domain.security.UserPrivilegeEntity;
-import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 import java.util.Optional;
 
-public interface UserPrivilegeRepository extends JpaRepository<UserPrivilegeEntity, Integer> {
+
+public interface UserPrivilegeService {
+
     List<UserPrivilegeEntity> findByUserInfoId(UserInfoEntity userInfoId);
+
+
+    void deleteAll(List<UserPrivilegeEntity> userPrivileges);
+
+    void save(UserPrivilegeEntity userPrivilegeEntity);
 
 }

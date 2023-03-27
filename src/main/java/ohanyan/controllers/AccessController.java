@@ -26,16 +26,16 @@ import static javafx.scene.control.TableView.CONSTRAINED_RESIZE_POLICY;
 @Component
 @FxmlView("access.fxml")
 public class AccessController {
-    private final PrivilegeRepository privilegeRepository;
-    private final ModuleRepository moduleRepository;
-    private final UserInfoRepository userInfoRepository;
-    private final UserRepository userRepository;
-    private final UserRoleRepository userRoleRepository;
-    private final AccessTypeRepository accessTypeRepository;
-    private final AccessSectionRepository accessSectionRepository;
-    private final RolePrivilegeRepository rolePrivilegeRepository;
+    private final PrivilegeService privilegeService;
+    private final ModuleService moduleService;
+    private final UserInfoService userInfoService;
+    private final UserService userService;
+    private final UserRoleService userRoleService;
+    private final AccessTypeService accessTypeService;
+    private final AccessSectionService accessSectionService;
+    private final RolePrivilegeService rolePrivilegeService;
 
-    private final UserPrivilegeRepository userPrivilegeRepository;
+    private final UserPrivilegeService userPrivilegeService;
 
     public TableView<AccessControls> referencesAccessView;
     public TableView<AccessControls> managementAccessView;
@@ -107,8 +107,8 @@ public class AccessController {
     @FXML
     private void initialize() {
 
-        accessTypeList = new ArrayList<>(accessTypeRepository.findAll()).stream().collect(Collectors.toMap(AccessTypeEntity::getAccessTypeId, k -> k));
-        roleList = userRoleRepository.findAll().stream().sorted().collect(Collectors.toList());
+        accessTypeList = new ArrayList<>(accessTypeService.findAll()).stream().collect(Collectors.toMap(AccessTypeEntity::getAccessTypeId, k -> k));
+        roleList = userRoleService.findAll().stream().sorted().collect(Collectors.toList());
         availableRoles = FXCollections.observableArrayList();
         for (UserRoleEntity r :
                 roleList) {
@@ -137,9 +137,9 @@ public class AccessController {
         if (login.equals("")) {
             stage.setTitle("Настройка доступа");
         } else {
-            Optional<UserInfoEntity> u = userInfoRepository.findByUserLogin(login);
+            Optional<UserInfoEntity> u = userInfoService.findByUserLogin(login);
             if (u.isPresent()) {
-                Optional<UserEntity> user = userRepository.findByUserInfoId(u.get());
+                Optional<UserEntity> user = userService.findByUserInfoId(u.get());
                 if (user.isPresent()) {
                     userFullName = user.get().getUserFullname();
                     userLogin = user.get().getUserInfoId().getUserLogin();
@@ -165,7 +165,7 @@ public class AccessController {
             if (!role.equals("") && (newValue.equals("reset") || newValue.equals("cancel")) && !login.equals("")) {
                 roleBox.setValue(role);
             }
-            roleList = userRoleRepository.findAll();
+            roleList = userRoleService.findAll();
             rPrivilegeList = roleList.stream().filter(r -> r.getUserRoleName().equals(role))
                     .flatMap(k -> k.getPrivileges().stream())
                     .collect(Collectors.toList());
@@ -221,7 +221,7 @@ public class AccessController {
         tableColumn.setStyle("-fx-alignment: CENTER;");
         tableColumn.setSortable(false);
         columns.add(tableColumn);
-        Optional<AccessSectionEntity> accessSection = accessSectionRepository.findByAccessSectionName(subject);
+        Optional<AccessSectionEntity> accessSection = accessSectionService.findByAccessSectionName(subject);
         if (accessSection.isPresent()) {
             AccessSectionEntity accessSectionEntity = accessSection.get();
 
@@ -271,14 +271,14 @@ public class AccessController {
     }
 
     private void setAccessRights(ObservableList<AccessControls> accessList, AccessSectionEntity accessSection) {
-        List<ModuleEntity> moduleList = moduleRepository.findByAccessSectionId(accessSection);
+        List<ModuleEntity> moduleList = moduleService.findByAccessSectionId(accessSection);
         List<PrivilegeEntity> privilegeListPerModule;
         for (ModuleEntity module : moduleList) {
-            Optional<UserRoleEntity> userRole = userRoleRepository.findByUserRoleNameIgnoreCase(roleBox.getValue());
+            Optional<UserRoleEntity> userRole = userRoleService.findByUserRoleName(roleBox.getValue());
             if (userRole.isPresent()) {
                 Set<PrivilegeEntity> rolePrivilegeList = userRole.get().getPrivileges();
                 if (!login.equals("") && role.equals(roleBox.getValue())) {
-                    Optional<UserInfoEntity> userInfoEntity = userInfoRepository.findByUserLogin(userLogin);
+                    Optional<UserInfoEntity> userInfoEntity = userInfoService.findByUserLogin(userLogin);
                     if (userInfoEntity.isPresent()) {
                         Set<PrivilegeEntity> userPrivilegeList = userInfoEntity.get().getPrivileges();
                         privilegeListPerModule = new ArrayList<>();
@@ -365,10 +365,10 @@ public class AccessController {
                 stage.close();
                 break;
             case "reset":
-                Optional<UserInfoEntity> user = userInfoRepository.findByUserLogin(userLogin);
+                Optional<UserInfoEntity> user = userInfoService.findByUserLogin(userLogin);
                 if (user.isPresent()) {
-                    List<UserPrivilegeEntity> userPrivileges = userPrivilegeRepository.findByUserInfoId(user.get());
-                    userPrivilegeRepository.deleteAll(userPrivileges);
+                    List<UserPrivilegeEntity> userPrivileges = userPrivilegeService.findByUserInfoId(user.get());
+                    userPrivilegeService.deleteAll(userPrivileges);
                     fillAccessControls("reset");
                 }
                 break;
@@ -377,11 +377,11 @@ public class AccessController {
 
     public void updatePrivilege(AccessControls access) {
         if (!login.equals("")) {
-            Optional<UserInfoEntity> user = userInfoRepository.findByUserLogin(userLogin);
+            Optional<UserInfoEntity> user = userInfoService.findByUserLogin(userLogin);
             if (user.isPresent()) {
                 if (counter == 0) {
-                    List<UserPrivilegeEntity> userPrivileges = userPrivilegeRepository.findByUserInfoId(user.get());
-                    userPrivilegeRepository.deleteAll(userPrivileges);
+                    List<UserPrivilegeEntity> userPrivileges = userPrivilegeService.findByUserInfoId(user.get());
+                    userPrivilegeService.deleteAll(userPrivileges);
                     ++counter;
                 }
 
@@ -390,27 +390,27 @@ public class AccessController {
                     for (PrivilegeEntity pe :
                             rPrivilegeList) {
                         if (p.getPrivilegeName().contains(pe.getPrivilegeName()) && p.getAccessTypeId().getAccessTypeId() != pe.getAccessTypeId().getAccessTypeId()) {
-                            userPrivilegeRepository.save(new UserPrivilegeEntity(p, user.get()));
+                            userPrivilegeService.save(new UserPrivilegeEntity(p, user.get()));
                             break;
                         }
                     }
 
                 }
             }
-            Optional<UserRoleEntity> userRole = userRoleRepository.findByUserRoleNameIgnoreCase(roleBox.getValue());
-            userRole.ifPresent(userRoleEntity -> userInfoRepository.updateUserRole(userRoleEntity, userLogin));
+            Optional<UserRoleEntity> userRole = userRoleService.findByUserRoleName(roleBox.getValue());
+            userRole.ifPresent(userRoleEntity -> userInfoService.updateUserRole(userRoleEntity, userLogin));
         } else {
-            Optional<UserRoleEntity> userRole = userRoleRepository.findByUserRoleNameIgnoreCase(roleBox.getValue());
+            Optional<UserRoleEntity> userRole = userRoleService.findByUserRoleName(roleBox.getValue());
             if (userRole.isPresent()) {
                 if (counter == 0) {
-                    List<RolePrivilegeEntity> rolePrivileges = rolePrivilegeRepository.findByUserRoleId(userRole.get());
-                    rolePrivilegeRepository.deleteAll(rolePrivileges);
+                    List<RolePrivilegeEntity> rolePrivileges = rolePrivilegeService.findByUserRoleId(userRole.get());
+                    rolePrivilegeService.deleteAll(rolePrivileges);
                     ++counter;
                 }
 
                 for (PrivilegeEntity p :
                         access.getPrivilegeList()) {
-                    rolePrivilegeRepository.save(new RolePrivilegeEntity(p, userRole.get()));
+                    rolePrivilegeService.save(new RolePrivilegeEntity(p, userRole.get()));
                 }
 
             }
@@ -756,11 +756,11 @@ public class AccessController {
             String privilegeNameWithOutPostFix = prefix + FxmlViewAccessController.getTranslatedValue(module.getModuleName());
             String privilegeName = prefix + FxmlViewAccessController.getTranslatedValue(module.getModuleName()) + getPostFix(prefix, FxmlViewAccessController.getTranslatedValue(module.getModuleName()));
             AccessTypeEntity accessType = accessTypeList.get(at);
-            Optional<PrivilegeEntity> privilegeEntity = privilegeRepository.findByPrivilegeNameAndAccessTypeId(privilegeName, accessType);
+            Optional<PrivilegeEntity> privilegeEntity = privilegeService.findByPrivilegeNameAndAccessTypeId(privilegeName, accessType);
 
             if (!privilegeEntity.isPresent()) {
-                privilegeRepository.save(new PrivilegeEntity(privilegeName, accessType, module));
-                privilegeEntity = privilegeRepository.findByPrivilegeNameAndAccessTypeId(privilegeName, accessType);
+                privilegeService.save(new PrivilegeEntity(privilegeName, accessType, module));
+                privilegeEntity = privilegeService.findByPrivilegeNameAndAccessTypeId(privilegeName, accessType);
 
             }
             if (privilegeEntity.isPresent()) {
@@ -773,19 +773,19 @@ public class AccessController {
             String privilegeNameWithOutPostFix = prefix + FxmlViewAccessController.getTranslatedValue(module.getModuleName());
             String privilegeName = prefix + FxmlViewAccessController.getTranslatedValue(module.getModuleName()) + getPostFix(prefix, FxmlViewAccessController.getTranslatedValue(module.getModuleName()));
 
-            Optional<PrivilegeEntity> privilegeEntity = privilegeRepository.findByPrivilegeNameAndAccessTypeId(privilegeName, accessTypeList.get(2));
+            Optional<PrivilegeEntity> privilegeEntity = privilegeService.findByPrivilegeNameAndAccessTypeId(privilegeName, accessTypeList.get(2));
             if (!privilegeEntity.isPresent()) {
-                privilegeRepository.save(new PrivilegeEntity(privilegeName, accessTypeList.get(2), module));
-                privilegeEntity = privilegeRepository.findByPrivilegeNameAndAccessTypeId(privilegeName, accessTypeList.get(2));
+                privilegeService.save(new PrivilegeEntity(privilegeName, accessTypeList.get(2), module));
+                privilegeEntity = privilegeService.findByPrivilegeNameAndAccessTypeId(privilegeName, accessTypeList.get(2));
 
             }
             if (privilegeEntity.isPresent()) {
                 privilegeList = privilegeList.stream().filter(v -> !v.getPrivilegeName().equals(privilegeNameWithOutPostFix)).collect(Collectors.toList());
                 privilegeList.add(privilegeEntity.get());
             }
-            privilegeEntity = privilegeRepository.findByPrivilegeNameAndAccessTypeId(privilegeName, accessTypeList.get(1));
+            privilegeEntity = privilegeService.findByPrivilegeNameAndAccessTypeId(privilegeName, accessTypeList.get(1));
             if (!privilegeEntity.isPresent()) {
-                privilegeRepository.save(new PrivilegeEntity(privilegeName, accessTypeList.get(1), module));
+                privilegeService.save(new PrivilegeEntity(privilegeName, accessTypeList.get(1), module));
             }
 
         }

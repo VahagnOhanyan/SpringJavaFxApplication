@@ -9,7 +9,6 @@ import org.springframework.stereotype.Component;
 public class FxmlViewAccessController {
 
     public static void resolveAccess(Node node) {
-
         if (node instanceof MenuBar) {
             MenuBar menuBar = (MenuBar) node;
             for (Menu menu : menuBar.getMenus()) {
@@ -109,8 +108,6 @@ public class FxmlViewAccessController {
             }
             disableEmptyMenuButton(menuButton);
         }
-
-
         if (node instanceof SplitPane) {
             SplitPane splitPane = (SplitPane) node;
             for (Node n : splitPane.getItems()) {
@@ -249,11 +246,6 @@ public class FxmlViewAccessController {
                 break;
             case "Мои задачи":
             case "Задача":
-            case "В работе":
-            case "Выполнено":
-            case "Проверено":
-            case "Утверждено":
-            case "В ожидании":
                 v = "Task";
                 break;
             case "Справочники":
@@ -283,14 +275,11 @@ public class FxmlViewAccessController {
             case "Табель":
                 v = "TimeSheet";
                 break;
-            case "Ресурсный отчёт":
-                v = "Resource";
+            case "Отчёт":
+                v = "";
                 break;
-            case "Эффективность сотрудников":
-                v = "Eff";
-                break;
-            case "АСУ ПД vs 1C":
-                v = "Asupd1c";
+            case "Csv":
+                v = "Csv";
                 break;
         }
         return v;
