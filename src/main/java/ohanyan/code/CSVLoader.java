@@ -70,7 +70,7 @@ public class CSVLoader {
                 ps = con.prepareStatement(query);
 
                 while ((nextLine = csvReader.readNext()) != null) {
-                    if (nextLine[0] == null || nextLine[0].equals("") || nextLine[0].equals("Итого")) {
+                    if (nextLine[0] == null || nextLine[0].equals("") || nextLine[0].equals("Total")) {
                         continue;
                     }
                     for (int i = 1; i <= tableHeaderRow.length; i++) {
@@ -126,25 +126,25 @@ public class CSVLoader {
     public String returnRowName(String row) {
         String r = null;
         switch (row.trim()) {
-            case "Табельный номер":
+            case "Num":
                 r = "num";
                 break;
-            case "ФИО":
+            case "Full name":
                 r = "fullname";
                 break;
-            case "Месяц, Год":
+            case "Month, Year":
                 r = "monthyear";
                 break;
-            case "Отработано":
+            case "Worked":
                 r = "worked";
                 break;
-            case "Больничный":
+            case "Hospital":
                 r = "hospital";
                 break;
-            case "Отпуск":
+            case "Vacation":
                 r = "vacation";
                 break;
-            case "Итого":
+            case "Total":
                 r = "total";
                 break;
             default:

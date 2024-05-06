@@ -69,7 +69,7 @@ public class UploadCsvController {
         for (int i = 0; i < records.size(); i++) {
             if (csvFileName.equals(records.get(i).getMonthyear())) {
                 csvFile = null;
-                alreadyImported.setText("Отчёт за данный период уже загружен");
+                alreadyImported.setText("Report for that period already imported");
                 alreadyImported.setVisible(true);
             }
         }

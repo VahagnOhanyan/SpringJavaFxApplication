@@ -56,11 +56,11 @@ public class AccessController {
 
     private final ObservableList<AccessControls> timeSheetAccesslist = FXCollections.observableArrayList();
     private final ObservableList<AccessControls> reportAccesslist = FXCollections.observableArrayList();
-    private final ObservableList<String> availableValues = FXCollections.observableArrayList("Да", "Нет");
+    private final ObservableList<String> availableValues = FXCollections.observableArrayList("Yes", "No");
     private final ObservableList<String> availableValuesForConfirm =
-            FXCollections.observableArrayList("Ведущий специалист", "Начальник отдела", "Менеджер проекта", "Super_user", "Нет");
+            FXCollections.observableArrayList("Leading specialist", "Department head", "Project manager", "Super_user", "No");
     private final ObservableList<String> availableValuesForRequestConfirm =
-            FXCollections.observableArrayList("АУП", "Менеджер проекта", "Super_user", "Нет");
+            FXCollections.observableArrayList("АУП", "Project manager", "Super_user", "No");
 
 
     private ObservableList<String> availableRoles = null;
@@ -135,7 +135,7 @@ public class AccessController {
         this.login = login;
 
         if (login.equals("")) {
-            stage.setTitle("Настройка доступа");
+            stage.setTitle("Access settings");
         } else {
             Optional<UserInfoEntity> u = userInfoService.findByUserLogin(login);
             if (u.isPresent()) {
@@ -146,7 +146,7 @@ public class AccessController {
                     role = user.get().getUserInfoId().getUserRoleId().getUserRoleName();
                 }
             }
-            stage.setTitle("Настройка доступа >>> " + role + " >>> " + userFullName);
+            stage.setTitle("Access settings >>> " + role + " >>> " + userFullName);
         }
         if (!role.equals("")) {
             roleBox.setValue(role);
@@ -158,7 +158,7 @@ public class AccessController {
     }
 
     private void fillAccessControls(String newValue) {
-        if (newValue != null && !newValue.equals("Выберите роль")) {
+        if (newValue != null && !newValue.equals("Choose role")) {
             if (newValue.equals("apply")) {
                 role = roleBox.getValue();
             }
@@ -185,15 +185,15 @@ public class AccessController {
             reset.setVisible(true);
 
             if (login.equals("")) {
-                stage.setTitle("Настройка доступа  >>>  " + roleBox.getValue());
+                stage.setTitle("Access settings  >>>  " + roleBox.getValue());
             } else {
-                stage.setTitle("Настройка доступа >>> " + roleBox.getValue() + " >>> " + userFullName);
+                stage.setTitle("Access settings >>> " + roleBox.getValue() + " >>> " + userFullName);
             }
-            initAccessRights("Справочники", referencesAccessView, refAccessControls, null, refAccesslist);
-            initAccessRights("Менеджмент", managementAccessView, managementAccessControls, null, managementAccesslist);
-            initAccessRights("Задачи", tasksAccessView, taskAccessControls, null, taskAccesslist);
-            initAccessRights("Табель", timeSheetAccessView, timeSheetAccessControls, null, timeSheetAccesslist);
-            initAccessRights("Отчёты", reportsAccessView, null, reportAccessControls, reportAccesslist);
+            initAccessRights("Directories", referencesAccessView, refAccessControls, null, refAccesslist);
+            initAccessRights("Management", managementAccessView, managementAccessControls, null, managementAccesslist);
+            initAccessRights("Tasks", tasksAccessView, taskAccessControls, null, taskAccesslist);
+            initAccessRights("Timesheet", timeSheetAccessView, timeSheetAccessControls, null, timeSheetAccesslist);
+            initAccessRights("Reports", reportsAccessView, null, reportAccessControls, reportAccesslist);
         } else {
             referencesAccessView.setVisible(false);
             managementAccessView.setVisible(false);
@@ -225,17 +225,17 @@ public class AccessController {
         if (accessSection.isPresent()) {
             AccessSectionEntity accessSectionEntity = accessSection.get();
 
-            if (accessSectionEntity.getAccessSectionName().equals("Справочники") ||
-                    accessSectionEntity.getAccessSectionName().equals("Менеджмент") ||
-                    accessSectionEntity.getAccessSectionName().equals("Задачи") ||
-                    accessSectionEntity.getAccessSectionName().equals("Табель")) {
+            if (accessSectionEntity.getAccessSectionName().equals("Directories") ||
+                    accessSectionEntity.getAccessSectionName().equals("Management") ||
+                    accessSectionEntity.getAccessSectionName().equals("Tasks") ||
+                    accessSectionEntity.getAccessSectionName().equals("Timesheet")) {
                 accessView.setItems(accessList);
                 fillAccessRightsForm1(accessControls);
                 Collections.addAll(columns, accessControls);
                 setAccessRights(accessList, accessSectionEntity);
             }
 
-            if (accessSectionEntity.getAccessSectionName().equals("Отчёты")) {
+            if (accessSectionEntity.getAccessSectionName().equals("Reports")) {
                 accessView.setItems(accessList);
                 fillAccessRightsForm2(accessRadioButtons);
                 Collections.addAll(columns, accessRadioButtons);
@@ -245,27 +245,27 @@ public class AccessController {
     }
 
     private void fillAccessRightsForm1(TableColumn<AccessControls, ComboBox<String>>[] accessControls) {
-        accessControls[0] = new TableColumn<>("Видимость папки");
+        accessControls[0] = new TableColumn<>("Visibility");
         accessControls[0].setCellValueFactory(new PropertyValueFactory<>("folderVisibility"));
-        accessControls[1] = new TableColumn<>("Подробная информация");
+        accessControls[1] = new TableColumn<>("Detail");
         accessControls[1].setCellValueFactory(new PropertyValueFactory<>("detailedInfo"));
-        accessControls[2] = new TableColumn<>("Создание");
+        accessControls[2] = new TableColumn<>("Create");
         accessControls[2].setCellValueFactory(new PropertyValueFactory<>("create"));
-        accessControls[3] = new TableColumn<>("Редакирование");
+        accessControls[3] = new TableColumn<>("Edit");
         accessControls[3].setCellValueFactory(new PropertyValueFactory<>("edit"));
-        accessControls[4] = new TableColumn<>("Удаление");
+        accessControls[4] = new TableColumn<>("Delete");
         accessControls[4].setCellValueFactory(new PropertyValueFactory<>("delete"));
-        accessControls[5] = new TableColumn<>("Назначение");
+        accessControls[5] = new TableColumn<>("Assign");
         accessControls[5].setCellValueFactory(new PropertyValueFactory<>("assign"));
-        accessControls[6] = new TableColumn<>("Согласование");
+        accessControls[6] = new TableColumn<>("Adjustment");
         accessControls[6].setCellValueFactory(new PropertyValueFactory<>("confirm"));
 
     }
 
     private void fillAccessRightsForm2(TableColumn<AccessControls, RadioButton>[] accessControls) {
-        accessControls[0] = new TableColumn<>("Да");
+        accessControls[0] = new TableColumn<>("Yes");
         accessControls[0].setCellValueFactory(new PropertyValueFactory<>("yes"));
-        accessControls[1] = new TableColumn<>("Нет");
+        accessControls[1] = new TableColumn<>("No");
         accessControls[1].setCellValueFactory(new PropertyValueFactory<>("no"));
 
     }
@@ -419,16 +419,16 @@ public class AccessController {
 
 
     private int getAccessTypeId(String accessType) {
-        if (accessType.equals("Да")) {
+        if (accessType.equals("Yes")) {
             return 1;
         }
-        if (accessType.equals("Ведущий специалист")) {
+        if (accessType.equals("Leading specialist")) {
             return 1;
         }
-        if (accessType.equals("Начальник отдела")) {
+        if (accessType.equals("Department head")) {
             return 1;
         }
-        if (accessType.equals("Менеджер проекта")) {
+        if (accessType.equals("Project manager")) {
             return 1;
         }
         if (accessType.equals("АУП")) {
@@ -437,7 +437,7 @@ public class AccessController {
         if (accessType.equals("Super_user")) {
             return 1;
         }
-        if (accessType.equals("Нет")) {
+        if (accessType.equals("No")) {
             return 2;
         }
         return 0;
@@ -507,9 +507,9 @@ public class AccessController {
             if (login.equals("")) {
                 confirm = new ComboBox<>(availableValues);
             } else {
-                if (module.getModuleName().equals("Табель")) {
+                if (module.getModuleName().equals("Timesheet")) {
                     confirm = new ComboBox<>(availableValuesForConfirm);
-                } else if (module.getModuleName().equals("Заявки")) {
+                } else if (module.getModuleName().equals("Requests")) {
                     confirm = new ComboBox<>(availableValuesForRequestConfirm);
                 } else {
                     confirm = new ComboBox<>(availableValues);
@@ -532,7 +532,7 @@ public class AccessController {
                 }
                 if (privilege.getPrivilegeName().startsWith("read")) {
                     folderVisibility.setValue(getAccessTypeValue(privilege.getAccessTypeId().getAccessTypeId()));
-                    if (folderVisibility.getValue().equals("Нет")) {
+                    if (folderVisibility.getValue().equals("No")) {
                         detailedInfo.setValue(folderVisibility.getValue());
                         detailedInfo.setDisable(true);
                         edit.setValue(folderVisibility.getValue());
@@ -574,7 +574,7 @@ public class AccessController {
                 saveAbsentPrivilege("report", module, 2);
             }
             if (folderVisibility.getValue() == null && (module.getAccessSectionId().getAccessSectionId() != 4)) {
-                folderVisibility.setValue("Нет");
+                folderVisibility.setValue("No");
                 saveAbsentPrivilege("read", module, 2);
 
                 detailedInfo.setValue(folderVisibility.getValue());
@@ -604,48 +604,48 @@ public class AccessController {
             }
 
             if (detailedInfo.getValue() == null && (module.getAccessSectionId().getAccessSectionId() != 4)) {
-                detailedInfo.setValue("Нет");
+                detailedInfo.setValue("No");
                 defaultDetailedInfoValue = detailedInfo.getValue();
                 saveAbsentPrivilege("view", module, 2);
             }
             if (create.getValue() == null && (module.getAccessSectionId().getAccessSectionId() != 4)) {
-                create.setValue("Нет");
+                create.setValue("No");
                 defaultCreateValue = create.getValue();
                 saveAbsentPrivilege("create", module, 2);
             }
             if (edit.getValue() == null && (module.getAccessSectionId().getAccessSectionId() != 4)) {
-                edit.setValue("Нет");
+                edit.setValue("No");
                 defaultEditValue = edit.getValue();
                 saveAbsentPrivilege("edit", module, 2);
             }
             if (delete.getValue() == null && (module.getAccessSectionId().getAccessSectionId() != 4)) {
-                delete.setValue("Нет");
+                delete.setValue("No");
                 defaultDeleteValue = delete.getValue();
                 saveAbsentPrivilege("delete", module, 2);
             }
             if (assign.getValue() == null && (module.getAccessSectionId().getAccessSectionId() != 4)) {
-                assign.setValue("Нет");
+                assign.setValue("No");
                 defaultAssignValue = assign.getValue();
                 saveAbsentPrivilege("assign", module, 2);
             }
             if (confirm.getValue() == null && (module.getAccessSectionId().getAccessSectionId() != 4)) {
-                confirm.setValue("Нет");
+                confirm.setValue("No");
                 defaultConfirmValue = confirm.getValue();
                 saveAbsentPrivilege("confirm", module, 2);
 
             }
             confirm.setVisible(false);
             assign.setVisible(false);
-            if (module.getModuleName().equals("Табель") &&
-                    (roleBox.getValue().equals("Ведущий специалист") ||
-                            roleBox.getValue().equals("Менеджер проекта") ||
-                            roleBox.getValue().equals("Начальник отдела") ||
+            if (module.getModuleName().equals("Timesheet") &&
+                    (roleBox.getValue().equals("Leading specialist") ||
+                            roleBox.getValue().equals("Project manager") ||
+                            roleBox.getValue().equals("Department head") ||
                             roleBox.getValue().equals("Super_user") || !login.equals(""))) {
                 confirm.setVisible(true);
             }
             if (FxmlViewAccessController.getTranslatedValue(module.getModuleName()).equals("Request") &&
                     (roleBox.getValue().equals("АУП") ||
-                            roleBox.getValue().equals("Менеджер проекта") ||
+                            roleBox.getValue().equals("Project manager") ||
                             roleBox.getValue().equals("Super_user") || !login.equals(""))) {
                 confirm.setVisible(true);
             }
@@ -661,7 +661,7 @@ public class AccessController {
             folderVisibility.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
                 if (!newValue.equals(oldValue)) {
                     folderVisibility.setValue(newValue);
-                    if (newValue.equals("Нет")) {
+                    if (newValue.equals("No")) {
                         detailedInfo.setValue(newValue);
                         detailedInfo.setDisable(true);
                         edit.setValue(newValue);
@@ -736,17 +736,17 @@ public class AccessController {
             yes.selectedProperty().addListener(observable -> {
                 if (yes.isSelected()) {
                     getPrivilege("report", module, getAccessTypeIdByBoolean(true));
-                    System.out.println("Да");
+                    System.out.println("Yes");
                 } else {
-                    System.out.println("Нет");
+                    System.out.println("No");
                 }
             });
             no.selectedProperty().addListener(observable -> {
                 if (no.isSelected()) {
                     getPrivilege("report", module, getAccessTypeIdByBoolean(false));
-                    System.out.println("Нет");
+                    System.out.println("No");
                 } else {
-                    System.out.println("Да");
+                    System.out.println("Yes");
                 }
             });
         }
@@ -792,26 +792,26 @@ public class AccessController {
 
         private String getPostFix(String prefix, CharSequence module) {
             if (prefix.equals("confirm") && module.equals("TimeSheet")) {
-                if (roleBox.getValue().equals("Ведущий специалист")) {
+                if (roleBox.getValue().equals("Leading specialist")) {
                     return "LE";
                 }
-                if (roleBox.getValue().equals("Начальник отдела")) {
+                if (roleBox.getValue().equals("Department head")) {
                     return "DH";
                 }
-                if (roleBox.getValue().equals("Менеджер проекта")) {
+                if (roleBox.getValue().equals("Project manager")) {
                     return "PM";
                 }
                 if (roleBox.getValue().equals("Super_user")) {
                     return "Super_user";
                 }
-                if (!login.equals("") && !confirm.getValue().equals("Нет")) {
-                    if (confirm.getValue().equals("Ведущий специалист")) {
+                if (!login.equals("") && !confirm.getValue().equals("No")) {
+                    if (confirm.getValue().equals("Leading specialist")) {
                         return "LE";
                     }
-                    if (confirm.getValue().equals("Начальник отдела")) {
+                    if (confirm.getValue().equals("Department head")) {
                         return "DH";
                     }
-                    if (confirm.getValue().equals("Менеджер проекта")) {
+                    if (confirm.getValue().equals("Project manager")) {
                         return "PM";
                     }
                     if (confirm.getValue().equals("Super_user")) {
@@ -821,20 +821,20 @@ public class AccessController {
                 }
             }
             if (prefix.equals("confirm") && module.equals("Request")) {
-                if (roleBox.getValue().equals("АУП")) {
+                if (roleBox.getValue().equals("AUP")) {
                     return "AUP";
                 }
-                if (roleBox.getValue().equals("Менеджер проекта")) {
+                if (roleBox.getValue().equals("Project manager")) {
                     return "PM";
                 }
                 if (roleBox.getValue().equals("Super_user")) {
                     return "Super_user";
                 }
-                if (!login.equals("") && !confirm.getValue().equals("Нет")) {
-                    if (confirm.getValue().equals("АУП")) {
+                if (!login.equals("") && !confirm.getValue().equals("No")) {
+                    if (confirm.getValue().equals("AUP")) {
                         return "AUP";
                     }
-                    if (confirm.getValue().equals("Менеджер проекта")) {
+                    if (confirm.getValue().equals("Project manager")) {
                         return "PM";
                     }
                     if (confirm.getValue().equals("Super_user")) {
@@ -849,10 +849,10 @@ public class AccessController {
 
         private String getAccessTypeValue(int accessTypeId) {
             if (accessTypeId == 1) {
-                return "Да";
+                return "Yes";
             }
             if (accessTypeId == 2) {
-                return "Нет";
+                return "No";
 
             }
             return "Undefined";
@@ -861,13 +861,13 @@ public class AccessController {
         private String getAccessTypeValueByRole(PrivilegeEntity privilege) {
             if (privilege.getAccessTypeId().getAccessTypeId() == 1) {
                 if (privilege.getPrivilegeName().endsWith("LE")) {
-                    return "Ведущий специалист";
+                    return "Leading specialist";
                 }
                 if (privilege.getPrivilegeName().endsWith("DH")) {
-                    return "Начальник отдела";
+                    return "Department head";
                 }
                 if (privilege.getPrivilegeName().endsWith("PM")) {
-                    return "Менеджер проекта";
+                    return "Project manager";
                 }
                 if (privilege.getPrivilegeName().endsWith("Super_user")) {
                     return "Super_user";
@@ -877,7 +877,7 @@ public class AccessController {
                 }
             }
             if (privilege.getAccessTypeId().getAccessTypeId() == 2) {
-                return "Нет";
+                return "No";
             }
             return "Undefined";
         }

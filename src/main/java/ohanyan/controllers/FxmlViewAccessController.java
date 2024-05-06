@@ -206,7 +206,7 @@ public class FxmlViewAccessController {
     private static void deleteLeafItems(TreeItem<String> treeItem) {
         for (int i = 0; i < treeItem.getChildren().size(); i++) {
             if (treeItem.getChildren().get(i).isLeaf()) {
-                if (!treeItem.getChildren().get(i).getValue().equals("Табель")) {
+                if (!treeItem.getChildren().get(i).getValue().equals("Timesheet")) {
                     treeItem.getChildren().remove(treeItem.getChildren().get(i));
                     --i;
                 }
@@ -241,41 +241,49 @@ public class FxmlViewAccessController {
     public static CharSequence getTranslatedValue(String value) {
         String v = value;
         switch (value) {
-            case "Менеджмент":
+            case "Management":
                 v = "Management";
                 break;
-            case "Мои задачи":
-            case "Задача":
+            case "My tasks":
+            case "Tasks":
+            case "Task":
                 v = "Task";
                 break;
-            case "Справочники":
+            case "Directories":
+            case "Directory":
                 v = "Reference";
                 break;
-            case "Контракты":
+            case "Contracts":
+            case "Contract":
                 v = "Contract";
                 break;
-            case "Заявки":
+            case "Requests":
+            case "Request":
                 v = "Request";
                 break;
-            case "Мои проекты":
-            case "Проекты (Направления)":
+            case "My projects":
+            case "Projects":
+            case "Project":
                 v = "Project";
                 break;
-            case "Заказчики":
-            case "Заказчик":
+            case "Customer":
+            case "Customers":
                 v = "Customer";
                 break;
-            case "Площадки":
-            case "Площадка (Подразделение)":
+            case "Site":
+            case "Sites":
                 v = "Site";
                 break;
-            case "Сотрудники":
+            case "Employee":
+            case "Employees":
                 v = "Employee";
                 break;
-            case "Табель":
-                v = "TimeSheet";
+            case "Timesheet":
+            case "TimeSheet":
+                v = "Timesheet";
                 break;
-            case "Отчёт":
+            case "Report":
+            case "Reports":
                 v = "";
                 break;
             case "Csv":

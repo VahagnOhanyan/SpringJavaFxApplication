@@ -77,7 +77,7 @@ public class ReportController {
         yearBox.getItems().addAll("2018", "2019", "2020", "2021", "2022");
         halfyearBox.getItems().addAll("I", "II");
         quarterBox.getItems().addAll("I", "II", "III", "IV");
-        String[] months = {"Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"};
+        String[] months = {"January", "February", "Mars", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
         monthBox.getItems().addAll(months);
         reportSwitch.setSelected(true);
 
@@ -292,40 +292,40 @@ public class ReportController {
         Integer m = 0;
 
         switch (month) {
-            case "Январь":
+            case "January":
                 m = 0;
                 break;
-            case "Февраль":
+            case "February":
                 m = 1;
                 break;
-            case "Март":
+            case "Mars":
                 m = 2;
                 break;
-            case "Апрель":
+            case "April":
                 m = 3;
                 break;
-            case "Май":
+            case "May":
                 m = 4;
                 break;
-            case "Июнь":
+            case "June":
                 m = 5;
                 break;
-            case "Июль":
+            case "July":
                 m = 6;
                 break;
-            case "Август":
+            case "August":
                 m = 7;
                 break;
-            case "Сентябрь":
+            case "September":
                 m = 8;
                 break;
-            case "Октябрь":
+            case "October":
                 m = 9;
                 break;
-            case "Ноябрь":
+            case "November":
                 m = 10;
                 break;
-            case "Декабрь":
+            case "December":
                 m = 11;
                 break;
         }

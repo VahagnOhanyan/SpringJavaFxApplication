@@ -160,11 +160,11 @@ public class AuthController {
                     MainController.who = ContextController.who;
                     Main.authStage.close();
                 } else {
-                    setAlertStage("Ошибка аутентификации", null, "Проверьте правильность ввода данных для аутентификации", INFO);
+                    setAlertStage("Authentication error", null, "Проверьте правильность ввода данных для аутентификации", INFO);
                 }
             }
         } else {
-            setAlertStage("Ошибка аутентификации", null, "Введите данные для аутентификации", INFO);
+            setAlertStage("Authentication error", null, "Введите данные для аутентификации", INFO);
         }
     }
 

@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox fx:id="mainVBox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="600.0" minWidth="800.0" prefHeight="840.0" prefWidth="1140.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ohanyan.controllers.MainController">
+    <children>
+        <AnchorPane prefHeight="68.0" prefWidth="1140.0">
+            <children>
+                <MenuBar prefHeight="32.0" prefWidth="1024.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                    <menus>
+                        <Menu mnemonicParsing="false" text="Service">
+                            <items>
+                                <MenuItem fx:id="editCalendar" mnemonicParsing="false" onAction="#actionMenuItemPressed" text="Calendar" visible="true" />
+                                <MenuItem fx:id="editAccess" mnemonicParsing="false" onAction="#actionMenuItemPressed" text="Access rights" visible="true" />
+                                <MenuItem fx:id="uploadCsv" mnemonicParsing="false" onAction="#actionMenuItemPressed" text="Upload CSV file" visible="true" />
+                            </items>
+                        </Menu>
+                    </menus>
+                </MenuBar>
+
+                <ToolBar fx:id="toolbar" layoutY="32.0" prefHeight="32.0" prefWidth="1140.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="30.0">
+                    <items>
+                        <MenuButton fx:id="mBtnCreate" mnemonicParsing="false" prefHeight="34.0" prefWidth="120.0" text="Create">
+                            <items>
+                                <MenuItem fx:id="createContract" mnemonicParsing="false" onAction="#actionMenuItemPressed" text="Contract" visible="false" />
+                                <MenuItem fx:id="createRequest" mnemonicParsing="false" onAction="#actionMenuItemPressed" text="Request" visible="false" />
+                                <MenuItem fx:id="createProject" mnemonicParsing="false" onAction="#actionMenuItemPressed" text="Project" visible="false" />
+                                <MenuItem fx:id="createTask" mnemonicParsing="false" onAction="#actionMenuItemPressed" text="Task" visible="false" />
+                                <MenuItem disable="true" mnemonicParsing="false" text="----------------" />
+                                <MenuItem fx:id="createCustomer" mnemonicParsing="false" onAction="#actionMenuItemPressed" text="Customer" visible="false" />
+                                <MenuItem fx:id="createEmployee" mnemonicParsing="false" onAction="#actionMenuItemPressed" text="Employee" visible="false" />
+                                <MenuItem fx:id="createSite" mnemonicParsing="false" onAction="#actionMenuItemPressed" text="Site" visible="false" />
+                            </items>
+                        </MenuButton>
+                        <Button fx:id="deleteButton" disable="true" mnemonicParsing="false" onAction="#actionButtonPressed" prefHeight="34.0" prefWidth="40.0" />
+                        <Button fx:id="viewButton" disable="true" mnemonicParsing="false" onAction="#actionButtonPressed" prefHeight="34.0" prefWidth="120.0" text="Detail" />
+                        <Button fx:id="editButton" disable="true" mnemonicParsing="false" onAction="#actionButtonPressed" prefHeight="34.0" prefWidth="135.0" text="Edit" />
+                        <MenuButton fx:id="reports" mnemonicParsing="false" prefHeight="34.0" prefWidth="120.0" text="Reports">
+                            <items>
+                                <MenuItem fx:id="report" mnemonicParsing="false" onAction="#actionMenuItemPressed" text="Report" visible="true" />
+                            </items>
+                        </MenuButton>
+                      <Button fx:id="forwardButton" disable="true" mnemonicParsing="false" onAction="#actionButtonPressed" prefHeight="25.0" />
+                      <Button fx:id="backButton" disable="true" mnemonicParsing="false" onAction="#actionButtonPressed" prefHeight="25.0" />
+                    </items>
+                </ToolBar>
+            </children>
+        </AnchorPane>
+        <AnchorPane prefHeight="482.0" prefWidth="1140.0" VBox.vgrow="ALWAYS">
+            <children>
+                <SplitPane dividerPositions="0.27680140597539543" prefHeight="698.0" prefWidth="1140.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                    <items>
+                        <AnchorPane minHeight="0.0" minWidth="200.0" prefHeight="160.0" prefWidth="200.0" SplitPane.resizableWithParent="false">
+                            <children>
+                                <TreeView fx:id="treeView" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                    <TreeItem fx:id="rootItem" expanded="true" value="Role">
+                                        <graphic>
+                                            <ImageView>
+                                                <image>
+                                                   <!-- <Image/>-->
+                                                </image>
+                                            </ImageView>
+                                        </graphic>
+                                        <children>
+                                            <TreeItem fx:id="treeItemManagement" expanded="true" value="Management">
+                                                <graphic>
+                                                    <ImageView>
+                                                        <image>
+                                                            <!--<Image/>-->
+                                                        </image>
+                                                    </ImageView>
+                                                </graphic>
+                                                <children>
+                                                    <TreeItem fx:id="treeItemContracts" value="Contracts">
+                                                        <graphic>
+                                                            <ImageView>
+                                                                <image>
+                                                                    <!--<Image/>-->
+                                                                </image>
+                                                            </ImageView>
+                                                        </graphic>
+                                                    </TreeItem>
+                                                    <TreeItem fx:id="treeItemRequests" value="Requests">
+                                                        <graphic>
+                                                            <ImageView>
+                                                                <image>
+                                                                   <!-- <Image/>-->
+                                                                </image>
+                                                            </ImageView>
+                                                        </graphic>
+                                                    </TreeItem>
+                                                    <TreeItem fx:id="treeItemMyProjects" value="My projects">
+                                                        <graphic>
+                                                            <ImageView>
+                                                                <image>
+                                                                  <!--  <Image/>-->
+                                                                </image>
+                                                            </ImageView>
+                                                        </graphic>
+                                                    </TreeItem>
+                                                </children>
+                                            </TreeItem>
+                                            <TreeItem fx:id="treeItemMyTasks" expanded="true" value="My tasks">
+                                                <graphic>
+                                                    <ImageView>
+                                                        <image>
+                                                           <!-- <Image/>-->
+                                                        </image>
+                                                    </ImageView>
+                                                </graphic>
+                                            </TreeItem>
+                                            <TreeItem fx:id="treeItemReferences" expanded="true" value="Directories">
+                                                <graphic>
+                                                    <ImageView>
+                                                        <image>
+                                                           <!-- <Image/>-->
+                                                        </image>
+                                                    </ImageView>
+                                                </graphic>
+                                                <children>
+                                                    <TreeItem fx:id="treeItemEmployees" value="Employees">
+                                                        <graphic>
+                                                            <ImageView>
+                                                                <image>
+                                                                   <!-- <Image/>-->
+                                                                </image>
+                                                            </ImageView>
+                                                        </graphic>
+                                                    </TreeItem>
+                                                    <TreeItem fx:id="treeItemCustomer" value="Customers">
+                                                        <graphic>
+                                                            <ImageView>
+                                                                <image>
+                                                                  <!--  <Image/>-->
+                                                                </image>
+                                                            </ImageView>
+                                                        </graphic>
+                                                    </TreeItem>
+                                                    <TreeItem fx:id="treeItemSites" value="Sites">
+                                                        <graphic>
+                                                            <ImageView>
+                                                                <image>
+                                                                   <!-- <Image/>-->
+                                                                </image>
+                                                            </ImageView>
+                                                        </graphic>
+                                                    </TreeItem>
+                                                </children>
+                                            </TreeItem>
+                                            <TreeItem fx:id="treeItemTimeSheet" value="Timesheet">
+                                                <graphic>
+                                                    <ImageView>
+                                                        <image>
+                                                           <!-- <Image/>-->
+                                                        </image>
+                                                    </ImageView>
+                                                </graphic>
+                                            </TreeItem>
+                                        </children>
+                                    </TreeItem>
+                                </TreeView>
+                            </children>
+                        </AnchorPane>
+                        <AnchorPane minHeight="200.0" minWidth="200.0">
+                            <children>
+                                <TableView fx:id="dataView" editable="true" layoutY="39.0" prefHeight="704.0" prefWidth="820.0" AnchorPane.bottomAnchor="-3.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="39.0" />
+                            </children>
+                        </AnchorPane>
+                    </items>
+                </SplitPane>
+            </children>
+        </AnchorPane>
+    </children>
+</VBox>

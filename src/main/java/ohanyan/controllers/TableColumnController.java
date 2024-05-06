@@ -116,70 +116,70 @@ public class TableColumnController {
     public static String generateColName(String bdColName) {
         switch (bdColName) {
             case "customer_id":
-                tableColName = "ID заказчика";
+                tableColName = "Customer ID";
                 break;
             case "customer_full_name":
-                tableColName = "Полное наименование";
+                tableColName = "Full name";
                 break;
             case "customer_name":
-                tableColName = "Заказчик";
+                tableColName = "Customer";
                 break;
             case "task_id":
-                tableColName = "ID задачи";
+                tableColName = "Task ID";
                 break;
             case "task_name":
-                tableColName = "Наименование задачи";
+                tableColName = "Task name";
                 break;
             case "task_number":
-                tableColName = "Номер задачи";
+                tableColName = "Task number";
                 break;
             case "project_id":
-                tableColName = "ID проекта";
+                tableColName = "Project ID";
                 break;
             case "project_name":
-                tableColName = "Проект";
+                tableColName = "Project";
                 break;
             case "request_id":
-                tableColName = "ID заявки";
+                tableColName = "Request ID";
                 break;
             case "request_description":
-                tableColName = "Описание заявки";
+                tableColName = "Request description";
                 break;
             case "request_number":
-                tableColName = "Номер заявки";
+                tableColName = "Request number";
                 break;
             case "contract_id":
-                tableColName = "ID контракта";
+                tableColName = "Contract ID";
                 break;
             case "contract_number":
-                tableColName = "Номер контракта";
+                tableColName = "Contract number";
                 break;
             case "contract_name":
-                tableColName = "Название контракта";
+                tableColName = "Contract name";
                 break;
             case "user_fullname":
-                tableColName = "ФИО";
+                tableColName = "Full name";
                 break;
             case "user_tel":
-                tableColName = "Телефон";
+                tableColName = "Phone";
                 break;
             case "user_address":
-                tableColName = "Адрес";
+                tableColName = "Address";
                 break;
             case "user_email":
                 tableColName = "Email";
                 break;
             case "user_role_name":
-                tableColName = "Роль";
+                tableColName = "Rtle";
                 break;
             case "site_id":
-                tableColName = "ID площадки";
+                tableColName = "Site ID";
                 break;
             case "site_name":
-                tableColName = "Площадка";
+                tableColName = "Site";
                 break;
             case "site_code":
-                tableColName = "Код";
+                tableColName = "Code";
                 break;
             default:
                 tableColName = "";

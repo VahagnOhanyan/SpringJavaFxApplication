@@ -7,6 +7,8 @@ import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -16,6 +18,8 @@ import net.rgielen.fxweaver.core.FxmlView;
 import ohanyan.adapter.jdbc.DBconnection;
 import org.springframework.stereotype.Component;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -57,6 +61,14 @@ public class MainController {
     private final List<String> columnList = new ArrayList<>();
     private ObservableList<TableColumnController> data = FXCollections.observableArrayList();
     private String nodeName = "";
+    @FXML
+    public Button backButton;
+    @FXML
+    public Button forwardButton;
+    ArrayList<Object> history = new ArrayList<>();
+    private int backCount = 1;
+    private boolean isBack = false;
+    private boolean isForward = false;
 
     @FXML
     private void initialize() {
@@ -67,7 +79,30 @@ public class MainController {
         stage.setScene(new Scene(mainVBox));
         stage.initModality(Modality.WINDOW_MODAL);
         FxmlViewAccessController.resolveAccess(mainVBox);
+        InputStream image = null;
+        try {
+            image = this.getClass().getResource("/images/back.png").openStream();
+            Image backImage = new Image(image);
+            image.close();
+            image = this.getClass().getResource("/images/forward.png").openStream();
+            Image forwardImage = new Image(image);
+            image.close();
+            backButton.setTooltip(new Tooltip("Назад"));
+            backButton.graphicProperty().setValue(new ImageView(backImage));
+            forwardButton.setTooltip(new Tooltip("Вперёд"));
+            forwardButton.graphicProperty().setValue(new ImageView(forwardImage));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+
         treeView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            if (!isBack && !isForward) {
+                history.add(newValue);
+            }
+            isBack = false;
+            isForward = false;
+            backButton.setDisable(backCount == history.size());
             dataView.getSelectionModel().clearSelection();
             deleteButton.setDisable(true);
             viewButton.setDisable(true);
@@ -111,8 +146,17 @@ public class MainController {
     }
 
     private void generateTableView(String newValue) {
-        if (newValue.equals("Сотрудники")) {
-            sql = "select * from public.user";
+        switch (newValue) {
+            case "Менеджмент":
+                sql = "";
+                break;
+            case "My projects":
+                sql = "SELECT p.project_id, p.project_name, p.customer_id FROM public.project p " +
+                        "ORDER BY p.project_id";
+                break;
+            case "Employees":
+                sql = "select user_fullname, user_tel, user_address, user_email from public.user";
+                break;
         }
         dataView.setEditable(true);
         dataView.getSelectionModel().clearSelection();
@@ -235,14 +279,55 @@ public class MainController {
     }
 
     private void setUploadCsvStage() {
-        fxWeaver.loadController(UploadCsvController.class).show("Загрузить CSV файл");
+        fxWeaver.loadController(UploadCsvController.class).show("Upload CSV file");
     }
 
     private void setReportStage() {
-        fxWeaver.loadController(ReportController.class).show("Отчёт");
+        fxWeaver.loadController(ReportController.class).show("Report");
     }
 
     public void actionButtonPressed(ActionEvent actionEvent) {
+        Object source = actionEvent.getSource();
+        if (!(source instanceof Button)) {
+            return;
+        }
+        Button clickedButton = (Button) source;
+        if (!clickedButton.getId().equals("backButton") &&
+                !clickedButton.getId().equals("forwardButton") && backCount > 1) {
+            backCount++;
+        }
+        switch (clickedButton.getId()) {
+            case "backButton":
+                backCount++;
+                if (history.get(history.size() - backCount) instanceof Controller) {
+                    Controller c = (Controller) history.get(history.size() - backCount);
+                    c.showThis();
+                }
+
+                isBack = true;
+                if (history.get(history.size() - backCount) instanceof TreeItem) {
+                    if (((String) ((TreeItem) history.get(history.size() - backCount)).getValue()).equalsIgnoreCase(treeView.getSelectionModel().getSelectedItem().getValue())) {
+                        backCount++;
+                    }
+                    treeView.getSelectionModel().select((TreeItem) history.get(history.size() - backCount));
+                }
+
+                backButton.setDisable(backCount == history.size());
+                forwardButton.setDisable(backCount == 1);
+                break;
+            case "forwardButton":
+                backCount--;
+                isForward = true;
+                if (history.get(history.size() - backCount) instanceof Controller) {
+                    Controller c = (Controller) history.get(history.size() - backCount);
+                    c.showThis();
+                }
+                if (history.get(history.size() - backCount) instanceof TreeItem) {
+                    treeView.getSelectionModel().select((TreeItem) history.get(history.size() - backCount));
+                }
+                forwardButton.setDisable(backCount == 1);
+                break;
+        }
 
     }
 }

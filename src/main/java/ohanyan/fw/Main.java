@@ -35,7 +35,7 @@ public class Main extends Application {
         authStage = new Stage();
         FxWeaver fxWeaver0 = applicationContext.getBean(FxWeaver.class);
         Parent auth = fxWeaver0.loadView(AuthController.class);
-        authStage.setTitle("Вход в систему");
+        authStage.setTitle("Log in");
         authStage.setScene(new Scene(auth));
         authStage.setResizable(false);
         authStage.setOnCloseRequest(arg0 -> System.exit(0));

@@ -1,0 +1,24 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/myDb
+    password: root
+    username: postgres
+    driver-class-name: org.postgresql.Driver
+  #jpa:
+    #show-sql: true
+    #properties:
+      #hibernate:
+        #generate_statistics: true
+        #use_sql_comments: true
+        #format_sql: true
+  flyway:
+    baseline-on-migrate: false
+#org:
+  #hibernate:
+    #stat: DEBUG
+    #SQL: DEBUG
+    #SQL_SLOW: INFO
+    #cache: DEBUG
+    #type:
+      #descriptor:
+        #sql: TRACE

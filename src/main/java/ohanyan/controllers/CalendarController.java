@@ -35,7 +35,7 @@ public class CalendarController {
     private Label yearLabel;
 
     public static final int START_YEAR = 2018;
-    private String[] months = {"Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"};
+    private String[] months = {"January", "February", "Mars", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
     private ObservableList<Months> list;
     private TableColumn<Months, String>[] tableColumnDays = new TableColumn[31];
     private Calendar c = Calendar.getInstance();
@@ -416,40 +416,40 @@ public class CalendarController {
             Integer m = 0;
 
             switch (month) {
-                case "Январь":
+                case "January":
                     m = 0;
                     break;
-                case "Февраль":
+                case "February":
                     m = 1;
                     break;
-                case "Март":
+                case "Mars":
                     m = 2;
                     break;
-                case "Апрель":
+                case "April":
                     m = 3;
                     break;
-                case "Май":
+                case "May":
                     m = 4;
                     break;
-                case "Июнь":
+                case "June":
                     m = 5;
                     break;
-                case "Июль":
+                case "July":
                     m = 6;
                     break;
-                case "Август":
+                case "August":
                     m = 7;
                     break;
-                case "Сентябрь":
+                case "September":
                     m = 8;
                     break;
-                case "Октябрь":
+                case "October":
                     m = 9;
                     break;
-                case "Ноябрь":
+                case "November":
                     m = 10;
                     break;
-                case "Декабрь":
+                case "December":
                     m = 11;
                     break;
             }
