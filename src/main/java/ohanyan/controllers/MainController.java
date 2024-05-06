@@ -16,15 +16,15 @@ import lombok.RequiredArgsConstructor;
 import net.rgielen.fxweaver.core.FxWeaver;
 import net.rgielen.fxweaver.core.FxmlView;
 import ohanyan.adapter.jdbc.DBconnection;
+import ohanyan.code.custom.*;
+import ohanyan.code.custom.TreeCell;
+import ohanyan.repo.StatusRepository;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static javafx.scene.control.TableView.UNCONSTRAINED_RESIZE_POLICY;
 import static ohanyan.controllers.FxmlViewAccessController.getTranslatedValue;
@@ -50,9 +50,10 @@ public class MainController {
     public Button viewButton;
     @FXML
     public Button editButton;
-
+    private final StatusRepository statusRepository;
     private final DBconnection dBconnection;
-
+    private final DialogController dialogController;
+    private final AlertController alertController;
     private Stage stage;
     @FXML
     public VBox mainVBox;
@@ -61,6 +62,11 @@ public class MainController {
     private final List<String> columnList = new ArrayList<>();
     private ObservableList<TableColumnController> data = FXCollections.observableArrayList();
     private String nodeName = "";
+    Map<Integer, Map<String, String>> changes = new HashMap<>();
+    @FXML
+    public Button btnChangesApply;
+    @FXML
+    public Button btnChangesCancel;
     @FXML
     public Button backButton;
     @FXML
@@ -69,6 +75,7 @@ public class MainController {
     private int backCount = 1;
     private boolean isBack = false;
     private boolean isForward = false;
+    private String tableColType = "";
 
     @FXML
     private void initialize() {
@@ -176,8 +183,22 @@ public class MainController {
             for (int i = 1; i <= columnList.size(); i++) {
                 String tableColName = columnList.get(i - 1);
                 tableColName = TableColumnController.generateColName(tableColName);
+                tableColType = ControlController.defineColumnType(newValue, tableColName);
                 tableColumns[i - 1] = new TableColumn<>(tableColName);
                 tableColumns[i - 1].setCellValueFactory(new PropertyValueFactory<>(columnList.get(i - 1)));
+                if (tableColType.equals("ComboBox")) {
+                    tableColumns[i - 1].setCellFactory(c ->
+                            new ComboBoxCell(treeView, btnChangesApply, btnChangesCancel, changes, c, newValue, statusRepository));
+                } else if (tableColType.equals("DatePicker")) {
+                    tableColumns[i - 1].setCellFactory(c -> new DatePickerCell(treeView, btnChangesApply, btnChangesCancel, changes, c, newValue, alertController));
+                } else if (tableColType.equals("CheckBox")) {
+                    tableColumns[i - 1].setCellFactory(c -> new CheckBoxCell(treeView, btnChangesApply, btnChangesCancel, changes, c, newValue));
+                } else if (tableColType.equals("TextField")) {
+                    tableColumns[i - 1].setCellFactory(c -> new TextFieldCell(treeView, btnChangesApply, btnChangesCancel, changes, c, newValue));
+                } else {
+                    tableColumns[i - 1].setCellFactory(c -> new TreeCell<>(c, newValue));
+                }
+
             }
             if (columnList.size() > 0) {
                 Collections.addAll(columns, tableColumns);

@@ -5,6 +5,8 @@ import javafx.fxml.FXML;
 import javafx.geometry.Orientation;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
@@ -13,73 +15,58 @@ import lombok.RequiredArgsConstructor;
 import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.stereotype.Component;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Optional;
+
 @RequiredArgsConstructor
 @Component
 @FxmlView("dialog.fxml")
 public class DialogController {
-    @FXML
-    public AnchorPane root;
-    @FXML
-    public Button confirm;
-    @FXML
-    public Button cancel;
+    enum DialogType {
+        QUESTION, WARNING
+    }
 
-    private Stage stage;
-    private final Label header = new Label();
-    private final Label content = new Label();
-    private final Separator separator = new Separator(Orientation.HORIZONTAL);
     public static String result;
-
-    @FXML
-    private void initialize() {
-        VBox vBox = new VBox(header, separator, content);
-        root.getChildren().add(vBox);
-        stage = new Stage();
-        stage.setScene(new Scene(root));
-        stage.setResizable(false);
-        stage.initModality(Modality.WINDOW_MODAL);
-
-    }
-
-    public void setTitle(String title) {
-        stage.setTitle(title);
-    }
-
-    public void setHeader(String header) {
-        this.header.setText(header);
-    }
-
-    public void setContent(String content) {
-        this.content.setText(content);
-    }
-
-
-    public void actionButtonPressed(ActionEvent actionEvent) {
-        Object source = actionEvent.getSource();
-
-        if (!(source instanceof Button)) {
-            return;
+    public void show(String title, String header, String content, DialogType type) {
+        Dialog<ButtonType> dialog = new Dialog<>();
+        dialog.setHeaderText(header);
+        dialog.setTitle(title);
+        ButtonType ok = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
+        ButtonType cancel = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
+        dialog.setContentText(content);
+        switch (type) {
+            case QUESTION:
+                try {
+                    InputStream image = this.getClass().getResource("/images/question.png").openStream();
+                    Image icon = new Image(image);
+                    image.close();
+                    dialog.setGraphic(new ImageView(icon));
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            case WARNING:
+                try {
+                    InputStream image = this.getClass().getResource("/images/warning.png").openStream();
+                    Image icon = new Image(image);
+                    image.close();
+                    dialog.setGraphic(new ImageView(icon));
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
         }
 
-        Button clickedButton = (Button) source;
-
-        switch (clickedButton.getId()) {
-            case "confirm":
+        dialog.getDialogPane().getButtonTypes().add(ok);
+        dialog.getDialogPane().getButtonTypes().add(cancel);
+        Optional<ButtonType> buttonType = dialog.showAndWait();
+        if (buttonType.isPresent()) {
+            ButtonType res = buttonType.get();
+            if (res == ok) {
                 result = "confirm";
-                stage.close();
-                break;
-            case "cancel":
+            } else {
                 result = "cancel";
-                stage.close();
-                break;
+            }
         }
-    }
-
-    public void show(String title, String header, String content) {
-        setTitle(title);
-        setHeader(header);
-        setContent(content);
-        stage.showAndWait();
     }
 
 }

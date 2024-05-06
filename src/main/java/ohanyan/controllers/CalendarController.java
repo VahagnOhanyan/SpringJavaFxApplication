@@ -12,7 +12,7 @@ import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import lombok.RequiredArgsConstructor;
-import ohanyan.code.CalendarCell;
+import ohanyan.code.custom.CalendarCell;
 import ohanyan.adapter.jdbc.DBconnection;
 import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.stereotype.Component;

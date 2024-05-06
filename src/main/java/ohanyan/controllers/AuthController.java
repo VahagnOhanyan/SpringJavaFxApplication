@@ -8,6 +8,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import lombok.RequiredArgsConstructor;
@@ -39,15 +40,9 @@ import static ohanyan.controllers.AlertController.AlertType.INFO;
 @Component
 @FxmlView("auth.fxml")
 public class AuthController {
-    private final FxWeaver fxWeaver;
     private final UserRepository userRepository;
-    private final UserRoleRepository userRoleRepository;
     private final UserInfoRepository userInfoRepository;
-    private final UserAuthDetailsService userAuthDetailsService;
-
-    private final PrivilegeRepository privilegeRepository;
-    private final RolePrivilegeRepository rolePrivilegeRepository;
-    FxControllerAndView<AlertController, VBox> alertDialog;
+    private final AlertController alertController;
 
     @FXML
     private TextField fldLogin;
@@ -95,7 +90,7 @@ public class AuthController {
                 fldLogin.setText(props.getProperty("user_login"));
             }
         } catch (IOException e) {
-           e.printStackTrace();
+            e.printStackTrace();
         }
     }
 
@@ -160,11 +155,11 @@ public class AuthController {
                     MainController.who = ContextController.who;
                     Main.authStage.close();
                 } else {
-                    setAlertStage("Authentication error", null, "Проверьте правильность ввода данных для аутентификации", INFO);
+                    setAlertStage("Authentication error", null, "Проверьте правильность ввода данных для аутентификации", INFO, null);
                 }
             }
         } else {
-            setAlertStage("Authentication error", null, "Введите данные для аутентификации", INFO);
+            setAlertStage("Authentication error", null, "Введите данные для аутентификации", INFO, null);
         }
     }
 
@@ -227,12 +222,7 @@ public class AuthController {
         System.out.println("ContextController.who: " + ContextController.who);
     }
 
-    private void setAlertStage(String title, String header, String content, AlertController.AlertType type) {
-        alertDialog = fxWeaver.load(AlertController.class);
-        AlertController controller = alertDialog.getController();
-        controller.setTitle(title);
-        controller.setHeader(header);
-        controller.setContent(content);
-        controller.show(title, header, content, type);
+    private void setAlertStage(String title, String header, String content, AlertController.AlertType type, GridPane expContent) {
+        alertController.show(title, header, content, type, expContent);
     }
 }
